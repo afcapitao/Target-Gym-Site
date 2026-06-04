@@ -19,7 +19,11 @@ const pillars = [
   },
 ];
 
-export default function AboutSection() {
+interface AboutSectionProps {
+  onBook: () => void;
+}
+
+export default function AboutSection({ onBook }: AboutSectionProps) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -78,17 +82,13 @@ export default function AboutSection() {
               </p>
             </div>
 
-            <a
-              href="#contacto"
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById("contacto")?.scrollIntoView({ behavior: "smooth" });
-              }}
+            <button
+              onClick={onBook}
               className="inline-flex items-center gap-2 mt-8 px-8 py-3 bg-[#e61f1f] text-white font-bold uppercase tracking-widest text-sm rounded hover:bg-[#cc1a1a] transition-all duration-200 hover:scale-105"
               data-testid="button-about-cta"
             >
               Agendar Avaliação Gratuita
-            </a>
+            </button>
           </div>
 
           {/* Image + pillars */}

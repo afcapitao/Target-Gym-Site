@@ -16,6 +16,10 @@ const services = [
   "Treino Online",
 ];
 
+interface FooterProps {
+  onBook: () => void;
+}
+
 const scrollTo = (href: string) => {
   const id = href.slice(1);
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -23,7 +27,7 @@ const scrollTo = (href: string) => {
 
 const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
-export default function Footer() {
+export default function Footer({ onBook }: FooterProps) {
   return (
     <footer className="bg-[#0a0a0a] border-t border-white/5" role="contentinfo">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">

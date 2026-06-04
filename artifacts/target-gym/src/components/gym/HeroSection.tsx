@@ -1,7 +1,11 @@
 import { useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  onBook: () => void;
+}
+
+export default function HeroSection({ onBook }: HeroSectionProps) {
   const videoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -63,17 +67,13 @@ export default function HeroSection() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-[fadeInUp_0.8s_ease_0.9s_forwards]">
-          <a
-            href="#contacto"
-            onClick={(e) => {
-              e.preventDefault();
-              document.getElementById("contacto")?.scrollIntoView({ behavior: "smooth" });
-            }}
+          <button
+            onClick={onBook}
             className="inline-flex items-center justify-center px-10 py-4 bg-[#e61f1f] text-white font-bold uppercase tracking-widest text-sm rounded hover:bg-[#cc1a1a] transition-all duration-200 hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(230,31,31,0.3)]"
             data-testid="button-hero-cta"
           >
             Começar Agora
-          </a>
+          </button>
           <a
             href="#sobre"
             onClick={(e) => {

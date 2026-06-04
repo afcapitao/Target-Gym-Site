@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Navbar from "@/components/gym/Navbar";
 import HeroSection from "@/components/gym/HeroSection";
 import StatsSection from "@/components/gym/StatsSection";
@@ -8,22 +9,36 @@ import TrainersSection from "@/components/gym/TrainersSection";
 import TestimonialsSection from "@/components/gym/TestimonialsSection";
 import ContactSection from "@/components/gym/ContactSection";
 import Footer from "@/components/gym/Footer";
+import BookingModal from "@/components/gym/BookingModal";
 
 export default function Home() {
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const [bookingService, setBookingService] = useState("");
+
+  const openBooking = (service = "") => {
+    setBookingService(service);
+    setBookingOpen(true);
+  };
+
   return (
     <>
-      <Navbar />
+      <Navbar onBook={() => openBooking()} />
       <main>
-        <HeroSection />
+        <HeroSection onBook={() => openBooking()} />
         <StatsSection />
-        <AboutSection />
-        <ServicesSection />
+        <AboutSection onBook={() => openBooking()} />
+        <ServicesSection onBook={openBooking} />
         <GallerySection />
-        <TrainersSection />
+        <TrainersSection onBook={() => openBooking()} />
         <TestimonialsSection />
         <ContactSection />
       </main>
-      <Footer />
+      <Footer onBook={() => openBooking()} />
+      <BookingModal
+        open={bookingOpen}
+        onClose={() => setBookingOpen(false)}
+        defaultService={bookingService}
+      />
     </>
   );
 }

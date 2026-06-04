@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
+interface NavbarProps {
+  onBook: () => void;
+}
+
 const navLinks = [
   { label: "Início", href: "#inicio" },
   { label: "Sobre", href: "#sobre" },
@@ -10,7 +14,7 @@ const navLinks = [
   { label: "Contacto", href: "#contacto" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ onBook }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState("inicio");
@@ -81,14 +85,13 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <a
-          href="#contacto"
-          onClick={(e) => { e.preventDefault(); scrollTo("#contacto"); }}
+        <button
+          onClick={onBook}
           className="hidden md:inline-flex items-center px-6 py-2.5 bg-[#e61f1f] text-white text-sm font-semibold uppercase tracking-widest rounded hover:bg-[#cc1a1a] transition-colors duration-200"
           data-testid="button-cta-nav"
         >
           Marcar Sessão
-        </a>
+        </button>
 
         {/* Mobile hamburger */}
         <button
@@ -120,14 +123,13 @@ export default function Navbar() {
               </li>
             ))}
             <li className="pt-4">
-              <a
-                href="#contacto"
-                onClick={(e) => { e.preventDefault(); scrollTo("#contacto"); }}
-                className="block text-center px-6 py-3 bg-[#e61f1f] text-white text-sm font-semibold uppercase tracking-widest rounded"
+              <button
+                onClick={onBook}
+                className="block w-full text-center px-6 py-3 bg-[#e61f1f] text-white text-sm font-semibold uppercase tracking-widest rounded"
                 data-testid="button-cta-mobile"
               >
                 Marcar Sessão
-              </a>
+              </button>
             </li>
           </ul>
         </div>

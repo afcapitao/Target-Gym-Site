@@ -44,7 +44,11 @@ const trainers = [
   },
 ];
 
-export default function TrainersSection() {
+interface TrainersSectionProps {
+  onBook: () => void;
+}
+
+export default function TrainersSection({ onBook }: TrainersSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -146,7 +150,14 @@ export default function TrainersSection() {
                   {trainer.role}
                 </p>
                 <p className="text-white/50 text-xs leading-relaxed mb-3">{trainer.bio}</p>
-                <p className="text-white/30 text-[10px] leading-relaxed">{trainer.certs}</p>
+                <p className="text-white/30 text-[10px] leading-relaxed mb-4">{trainer.certs}</p>
+                <button
+                  onClick={onBook}
+                  className="w-full py-2 border border-white/10 text-white/50 text-[11px] font-bold uppercase tracking-widest rounded hover:border-[#e61f1f] hover:text-[#e61f1f] transition-all duration-200"
+                  data-testid={`button-book-trainer-${trainer.name.toLowerCase().replace(/\s/g, "-")}`}
+                >
+                  Treinar com {trainer.name.split(" ")[0]}
+                </button>
               </div>
             </article>
           ))}
