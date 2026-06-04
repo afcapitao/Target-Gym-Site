@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Target Gym"
+version = "1.0.0"
+id = "artifacts/target-gym"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23499
+
+[services.development]
+run = "pnpm --filter @workspace/target-gym run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/target-gym", "run", "build" ]
+publicDir = "artifacts/target-gym/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23499"
+BASE_PATH = "/"

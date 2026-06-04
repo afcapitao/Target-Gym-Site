@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://targetgym.pt/sitemap.xml
