@@ -37,7 +37,7 @@ export default function Footer({ onBook }: FooterProps) {
             <img
               src="/logo.png"
               alt="Target Personal Training Gym logo"
-              className="h-14 w-auto mb-4"
+              className="h-16 w-auto mb-4"
             />
             <p className="text-white/40 text-sm leading-relaxed max-w-xs">
               Ginásio de personal training no Parque das Nações. Comprometidos

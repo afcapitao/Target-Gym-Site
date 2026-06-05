@@ -61,7 +61,7 @@ export default function Navbar({ onBook }: NavbarProps) {
           <img
             src="/logo.png"
             alt="Target Personal Training Gym logo"
-            className="h-14 w-auto"
+            className="h-16 w-auto"
           />
         </a>
 
