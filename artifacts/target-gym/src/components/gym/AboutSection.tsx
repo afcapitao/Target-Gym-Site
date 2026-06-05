@@ -14,8 +14,8 @@ const pillars = [
   },
   {
     icon: MapPin,
-    title: "Localização Premium",
-    desc: "No coração do Parque das Nações, a zona mais moderna e cosmopolita de Lisboa.",
+    title: "Localização Privilegiada",
+    desc: "No Parque das Nações, com acesso a espaços ao ar livre para treinos em ambiente natural sempre que possível.",
   },
 ];
 
