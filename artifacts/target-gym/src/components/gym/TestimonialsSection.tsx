@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Quote, Star } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const testimonials = [
   {
@@ -29,6 +30,7 @@ const testimonials = [
 ];
 
 export default function TestimonialsSection() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -53,37 +55,36 @@ export default function TestimonialsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-16">
           <p className="text-[#e61f1f] text-xs font-semibold tracking-[0.4em] uppercase mb-4">
-            Histórias Reais
+            {t.testimonials.sectionLabel}
           </p>
           <h2
             id="testimonials-heading"
             className="text-4xl sm:text-5xl font-black uppercase"
             style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
           >
-            O Que os Nossos
+            {t.testimonials.titleLine1}
             <br />
-            <span className="text-[#e61f1f]">Clientes Dizem</span>
+            <span className="text-[#e61f1f]">{t.testimonials.titleLine2}</span>
           </h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {testimonials.map((t) => (
+          {testimonials.map((review) => (
             <blockquote
-              key={t.name}
+              key={review.name}
               className="bg-[#1a1a1a] rounded-xl p-6 border border-white/5 hover:border-[#e61f1f]/20 transition-all duration-300 hover:-translate-y-1 flex flex-col gap-4"
-              data-testid={`card-testimonial-${t.name.toLowerCase().replace(/\s/g, "-")}`}
+              data-testid={`card-testimonial-${review.name.toLowerCase().replace(/\s/g, "-")}`}
             >
               <Quote className="text-[#e61f1f]/40" size={28} />
 
-              {/* Stars */}
               <div className="flex gap-0.5">
-                {Array.from({ length: t.stars }).map((_, i) => (
+                {Array.from({ length: review.stars }).map((_, i) => (
                   <Star key={i} className="text-[#e61f1f] fill-[#e61f1f]" size={14} />
                 ))}
               </div>
 
               <p className="text-white/70 text-sm leading-relaxed flex-1 italic">
-                "{t.text}"
+                "{review.text}"
               </p>
 
               <div className="flex items-center gap-3 mt-2">
@@ -91,11 +92,11 @@ export default function TestimonialsSection() {
                   className="w-10 h-10 rounded-full bg-[#e61f1f] flex items-center justify-center font-black text-white text-sm flex-shrink-0"
                   style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
                 >
-                  {t.initials}
+                  {review.initials}
                 </div>
                 <div>
-                  <p className="font-bold text-white text-sm">{t.name}</p>
-                  <p className="text-white/35 text-xs">Cliente verificado · Google</p>
+                  <p className="font-bold text-white text-sm">{review.name}</p>
+                  <p className="text-white/35 text-xs">{t.testimonials.verifiedLabel}</p>
                 </div>
               </div>
             </blockquote>

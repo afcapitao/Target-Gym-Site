@@ -1,13 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, Calendar, Clock, User, Mail, Phone, MessageSquare, ChevronDown, CheckCircle } from "lucide-react";
 import { useCreateBooking } from "@workspace/api-client-react";
-
-const services = [
-  { value: "personal-training", label: "Personal Training" },
-  { value: "group-class", label: "Aulas de Grupo" },
-  { value: "nutrition", label: "Nutrição Desportiva" },
-  { value: "online-training", label: "Treino Online" },
-];
+import { useLanguage } from "@/context/LanguageContext";
 
 const timeSlots = [
   "06:00–07:00",
@@ -54,9 +48,15 @@ function FieldError({ msg }: { msg?: string }) {
 }
 
 export default function BookingModal({ open, onClose, defaultService = "" }: BookingModalProps) {
+  const { t } = useLanguage();
+  const tb = t.booking;
   const [form, setForm] = useState<FormState>({ ...emptyForm, service: defaultService });
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const mutation = useCreateBooking();
+
+  useEffect(() => {
+    if (open) setForm((f) => ({ ...f, service: defaultService }));
+  }, [open, defaultService]);
 
   if (!open) return null;
 
@@ -67,12 +67,12 @@ export default function BookingModal({ open, onClose, defaultService = "" }: Boo
 
   const validate = (): boolean => {
     const e: Partial<Record<keyof FormState, string>> = {};
-    if (!form.name.trim() || form.name.trim().length < 2) e.name = "Nome obrigatório (mínimo 2 caracteres)";
-    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Email inválido";
-    if (!form.phone.trim() || form.phone.trim().length < 9) e.phone = "Telefone inválido";
-    if (!form.service) e.service = "Selecciona um serviço";
-    if (!form.preferredDate) e.preferredDate = "Indica uma data preferida";
-    if (!form.preferredTime) e.preferredTime = "Indica um horário preferido";
+    if (!form.name.trim() || form.name.trim().length < 2) e.name = tb.validation.name;
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = tb.validation.email;
+    if (!form.phone.trim() || form.phone.trim().length < 9) e.phone = tb.validation.phone;
+    if (!form.service) e.service = tb.validation.service;
+    if (!form.preferredDate) e.preferredDate = tb.validation.date;
+    if (!form.preferredTime) e.preferredTime = tb.validation.time;
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -107,7 +107,6 @@ export default function BookingModal({ open, onClose, defaultService = "" }: Boo
     }`;
 
   const labelClass = "block text-xs font-semibold uppercase tracking-widest text-white/50 mb-2";
-
   const today = new Date().toISOString().split("T")[0];
 
   return (
@@ -134,16 +133,14 @@ export default function BookingModal({ open, onClose, defaultService = "" }: Boo
               className="text-2xl font-black uppercase text-white"
               style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
             >
-              Marcar Sessão
+              {tb.title}
             </h2>
-            <p className="text-white/40 text-xs mt-1">
-              Preenche o formulário e entramos em contacto em 24h para confirmar.
-            </p>
+            <p className="text-white/40 text-xs mt-1">{tb.subtitle}</p>
           </div>
           <button
             onClick={handleClose}
             className="text-white/40 hover:text-white transition-colors p-1 mt-1"
-            aria-label="Fechar"
+            aria-label={tb.closeLabel}
             data-testid="button-booking-modal-close"
           >
             <X size={20} />
@@ -160,25 +157,24 @@ export default function BookingModal({ open, onClose, defaultService = "" }: Boo
               className="text-2xl font-black uppercase text-white mb-2"
               style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
             >
-              Reserva Confirmada!
+              {tb.successTitle}
             </h3>
             <p className="text-white/50 text-sm max-w-sm mx-auto leading-relaxed">
-              Recebemos o teu pedido de reserva. A nossa equipa entrará em contacto
-              para {form.email} em menos de 24 horas para confirmar a sessão.
+              {tb.successSubtitle(form.email)}
             </p>
             <div className="mt-6 p-4 bg-[#1a1a1a] rounded-xl text-left text-sm space-y-2 border border-white/5">
               <div className="flex justify-between">
-                <span className="text-white/40 uppercase tracking-wider text-xs">Serviço</span>
+                <span className="text-white/40 uppercase tracking-wider text-xs">{tb.summaryService}</span>
                 <span className="text-white font-medium">
-                  {services.find((s) => s.value === form.service)?.label}
+                  {tb.services.find((s) => s.value === form.service)?.label}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-white/40 uppercase tracking-wider text-xs">Data</span>
+                <span className="text-white/40 uppercase tracking-wider text-xs">{tb.summaryDate}</span>
                 <span className="text-white font-medium">{form.preferredDate}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-white/40 uppercase tracking-wider text-xs">Horário</span>
+                <span className="text-white/40 uppercase tracking-wider text-xs">{tb.summaryTime}</span>
                 <span className="text-white font-medium">{form.preferredTime}</span>
               </div>
             </div>
@@ -187,23 +183,22 @@ export default function BookingModal({ open, onClose, defaultService = "" }: Boo
               className="mt-8 px-8 py-3 bg-[#e61f1f] text-white font-bold uppercase tracking-widest text-sm rounded-lg hover:bg-[#cc1a1a] transition-colors"
               data-testid="button-booking-done"
             >
-              Fechar
+              {tb.doneBtn}
             </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-6 space-y-5" noValidate>
-            {/* Name + Email */}
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
                 <label htmlFor="booking-name" className={labelClass}>
-                  <span className="inline-flex items-center gap-1.5"><User size={10} /> Nome Completo</span>
+                  <span className="inline-flex items-center gap-1.5"><User size={10} /> {tb.nameLbl}</span>
                 </label>
                 <input
                   id="booking-name"
                   type="text"
                   value={form.name}
                   onChange={(e) => set("name", e.target.value)}
-                  placeholder="O teu nome"
+                  placeholder={tb.namePlaceholder}
                   className={inputClass("name")}
                   data-testid="input-booking-name"
                 />
@@ -218,7 +213,7 @@ export default function BookingModal({ open, onClose, defaultService = "" }: Boo
                   type="email"
                   value={form.email}
                   onChange={(e) => set("email", e.target.value)}
-                  placeholder="o-teu@email.com"
+                  placeholder={tb.emailPlaceholder}
                   className={inputClass("email")}
                   data-testid="input-booking-email"
                 />
@@ -226,11 +221,10 @@ export default function BookingModal({ open, onClose, defaultService = "" }: Boo
               </div>
             </div>
 
-            {/* Phone + Service */}
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
                 <label htmlFor="booking-phone" className={labelClass}>
-                  <span className="inline-flex items-center gap-1.5"><Phone size={10} /> Telefone</span>
+                  <span className="inline-flex items-center gap-1.5"><Phone size={10} /> {tb.phoneLbl}</span>
                 </label>
                 <input
                   id="booking-phone"
@@ -245,7 +239,7 @@ export default function BookingModal({ open, onClose, defaultService = "" }: Boo
               </div>
               <div>
                 <label htmlFor="booking-service" className={labelClass}>
-                  Serviço
+                  {tb.serviceLbl}
                 </label>
                 <div className="relative">
                   <select
@@ -255,8 +249,8 @@ export default function BookingModal({ open, onClose, defaultService = "" }: Boo
                     className={`${inputClass("service")} appearance-none cursor-pointer pr-10`}
                     data-testid="select-booking-service"
                   >
-                    <option value="" disabled>Seleccionar serviço</option>
-                    {services.map((s) => (
+                    <option value="" disabled>{tb.servicePlaceholder}</option>
+                    {tb.services.map((s) => (
                       <option key={s.value} value={s.value}>{s.label}</option>
                     ))}
                   </select>
@@ -266,11 +260,10 @@ export default function BookingModal({ open, onClose, defaultService = "" }: Boo
               </div>
             </div>
 
-            {/* Date + Time */}
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
                 <label htmlFor="booking-date" className={labelClass}>
-                  <span className="inline-flex items-center gap-1.5"><Calendar size={10} /> Data Preferida</span>
+                  <span className="inline-flex items-center gap-1.5"><Calendar size={10} /> {tb.dateLbl}</span>
                 </label>
                 <input
                   id="booking-date"
@@ -285,7 +278,7 @@ export default function BookingModal({ open, onClose, defaultService = "" }: Boo
               </div>
               <div>
                 <label htmlFor="booking-time" className={labelClass}>
-                  <span className="inline-flex items-center gap-1.5"><Clock size={10} /> Horário Preferido</span>
+                  <span className="inline-flex items-center gap-1.5"><Clock size={10} /> {tb.timeLbl}</span>
                 </label>
                 <div className="relative">
                   <select
@@ -295,9 +288,9 @@ export default function BookingModal({ open, onClose, defaultService = "" }: Boo
                     className={`${inputClass("preferredTime")} appearance-none cursor-pointer pr-10`}
                     data-testid="select-booking-time"
                   >
-                    <option value="" disabled>Seleccionar horário</option>
-                    {timeSlots.map((t) => (
-                      <option key={t} value={t}>{t}</option>
+                    <option value="" disabled>{tb.timePlaceholder}</option>
+                    {timeSlots.map((slot) => (
+                      <option key={slot} value={slot}>{slot}</option>
                     ))}
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" size={16} />
@@ -306,30 +299,27 @@ export default function BookingModal({ open, onClose, defaultService = "" }: Boo
               </div>
             </div>
 
-            {/* Message */}
             <div>
               <label htmlFor="booking-message" className={labelClass}>
-                <span className="inline-flex items-center gap-1.5"><MessageSquare size={10} /> Notas Adicionais (opcional)</span>
+                <span className="inline-flex items-center gap-1.5"><MessageSquare size={10} /> {tb.notesLbl}</span>
               </label>
               <textarea
                 id="booking-message"
                 rows={3}
                 value={form.message}
                 onChange={(e) => set("message", e.target.value)}
-                placeholder="Objectivos, lesões, disponibilidade específica..."
+                placeholder={tb.notesPlaceholder}
                 className={`${inputClass("message")} resize-none`}
                 data-testid="textarea-booking-message"
               />
             </div>
 
-            {/* API error */}
             {mutation.isError && (
               <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm" data-testid="booking-error">
-                Ocorreu um erro ao enviar a reserva. Tenta novamente ou contacta-nos por telefone.
+                {tb.errorMsg}
               </div>
             )}
 
-            {/* Submit */}
             <button
               type="submit"
               disabled={mutation.isPending}
@@ -337,12 +327,10 @@ export default function BookingModal({ open, onClose, defaultService = "" }: Boo
               data-testid="button-booking-submit"
               style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
             >
-              {mutation.isPending ? "A enviar reserva..." : "Confirmar Reserva"}
+              {mutation.isPending ? tb.submittingBtn : tb.submitBtn}
             </button>
 
-            <p className="text-center text-white/25 text-xs">
-              A tua reserva não é vinculativa até confirmação da nossa equipa.
-            </p>
+            <p className="text-center text-white/25 text-xs">{tb.disclaimer}</p>
           </form>
         )}
       </div>

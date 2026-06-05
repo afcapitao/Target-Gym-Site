@@ -1,28 +1,19 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import type { Lang } from "@/context/LanguageContext";
 
-interface NavbarProps {
-  onBook: () => void;
-}
-
-const navLinks = [
-  { label: "Início", href: "#inicio" },
-  { label: "Sobre", href: "#sobre" },
-  { label: "Serviços", href: "#servicos" },
-  { label: "Galeria", href: "#galeria" },
-  { label: "Equipa", href: "#equipa" },
-  { label: "Contacto", href: "#contacto" },
-];
-
-export default function Navbar({ onBook }: NavbarProps) {
+export default function Navbar({ onBook }: { onBook: () => void }) {
+  const { lang, setLang, t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState("inicio");
 
+  const navLinks = t.navbar.links;
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40);
-
       const sections = navLinks.map((l) => l.href.slice(1));
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
@@ -34,7 +25,7 @@ export default function Navbar({ onBook }: NavbarProps) {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [navLinks]);
 
   const scrollTo = (href: string) => {
     const id = href.slice(1);
@@ -42,6 +33,8 @@ export default function Navbar({ onBook }: NavbarProps) {
     if (el) el.scrollIntoView({ behavior: "smooth" });
     setMenuOpen(false);
   };
+
+  const toggleLang = () => setLang(lang === "pt" ? "en" : ("pt" as Lang));
 
   return (
     <header
@@ -85,23 +78,48 @@ export default function Navbar({ onBook }: NavbarProps) {
           ))}
         </ul>
 
-        <button
-          onClick={onBook}
-          className="hidden md:inline-flex items-center px-6 py-2.5 bg-[#e61f1f] text-white text-sm font-semibold uppercase tracking-widest rounded hover:bg-[#cc1a1a] transition-colors duration-200"
-          data-testid="button-cta-nav"
-        >
-          Marcar Sessão
-        </button>
+        <div className="hidden md:flex items-center gap-3">
+          {/* Language toggle */}
+          <button
+            onClick={toggleLang}
+            className="flex items-center gap-1 px-3 py-1.5 rounded border border-white/20 text-white/60 hover:text-white hover:border-white/50 text-xs font-bold uppercase tracking-widest transition-all duration-200"
+            data-testid="button-lang-toggle"
+            aria-label={lang === "pt" ? "Switch to English" : "Mudar para Português"}
+          >
+            <span className={lang === "pt" ? "text-white" : "text-white/40"}>PT</span>
+            <span className="text-white/30">|</span>
+            <span className={lang === "en" ? "text-white" : "text-white/40"}>EN</span>
+          </button>
 
-        {/* Mobile hamburger */}
-        <button
-          className="md:hidden text-white p-2"
-          onClick={() => setMenuOpen(!menuOpen)}
-          data-testid="button-menu-toggle"
-          aria-label="Abrir menu"
-        >
-          {menuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          <button
+            onClick={onBook}
+            className="inline-flex items-center px-6 py-2.5 bg-[#e61f1f] text-white text-sm font-semibold uppercase tracking-widest rounded hover:bg-[#cc1a1a] transition-colors duration-200"
+            data-testid="button-cta-nav"
+          >
+            {t.navbar.cta}
+          </button>
+        </div>
+
+        {/* Mobile right side */}
+        <div className="md:hidden flex items-center gap-2">
+          <button
+            onClick={toggleLang}
+            className="flex items-center gap-1 px-2.5 py-1 rounded border border-white/20 text-white/60 text-[10px] font-bold uppercase tracking-widest transition-all duration-200"
+            data-testid="button-lang-toggle-mobile"
+          >
+            <span className={lang === "pt" ? "text-white" : "text-white/40"}>PT</span>
+            <span className="text-white/30">|</span>
+            <span className={lang === "en" ? "text-white" : "text-white/40"}>EN</span>
+          </button>
+          <button
+            className="text-white p-2"
+            onClick={() => setMenuOpen(!menuOpen)}
+            data-testid="button-menu-toggle"
+            aria-label={t.navbar.menuAriaLabel}
+          >
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile menu */}
@@ -128,7 +146,7 @@ export default function Navbar({ onBook }: NavbarProps) {
                 className="block w-full text-center px-6 py-3 bg-[#e61f1f] text-white text-sm font-semibold uppercase tracking-widest rounded"
                 data-testid="button-cta-mobile"
               >
-                Marcar Sessão
+                {t.navbar.cta}
               </button>
             </li>
           </ul>

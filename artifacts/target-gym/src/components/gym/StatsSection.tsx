@@ -1,16 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-
-const stats = [
-  { value: 500, suffix: "+", label: "Membros Activos" },
-  { value: 12, suffix: "+", label: "Anos de Experiência" },
-  { value: 98, suffix: "%", label: "Taxa de Satisfação" },
-  { value: 15, suffix: "+", label: "Treinadores Certificados" },
-];
+import { useLanguage } from "@/context/LanguageContext";
 
 function Counter({ target, suffix }: { target: number; suffix: string }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
   const started = useRef(false);
+
+  useEffect(() => {
+    started.current = false;
+    setCount(0);
+  }, [target]);
 
   useEffect(() => {
     const el = ref.current;
@@ -49,11 +48,13 @@ function Counter({ target, suffix }: { target: number; suffix: string }) {
 }
 
 export default function StatsSection() {
+  const { t } = useLanguage();
+
   return (
-    <section className="bg-[#e61f1f] py-12" aria-label="Estatísticas">
+    <section className="bg-[#e61f1f] py-12" aria-label="Stats">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <dl className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
-          {stats.map((s) => (
+          {t.stats.map((s) => (
             <div key={s.label} className="flex flex-col gap-2" data-testid={`stat-${s.label.toLowerCase().replace(/\s/g, "-")}`}>
               <dt
                 className="text-4xl sm:text-5xl font-black tracking-tight"

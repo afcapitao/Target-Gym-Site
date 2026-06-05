@@ -1,50 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
-const images = [
-  {
-    src: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80&fit=crop",
-    alt: "Sala de pesos do Target Gym com equipamento profissional",
-    caption: "Sala de Pesos",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80&fit=crop",
-    alt: "Sessão de personal training no Target Gym",
-    caption: "Personal Training",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1581009137042-c552e485697a?w=800&q=80&fit=crop",
-    alt: "Área de treino funcional com kettlebells",
-    caption: "Treino Funcional",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=800&q=80&fit=crop",
-    alt: "Equipamento cardiovascular moderno",
-    caption: "Zona Cardio",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=800&q=80&fit=crop",
-    alt: "Plataforma de levantamento olímpico",
-    caption: "Levantamento Olímpico",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=800&q=80&fit=crop",
-    alt: "Área de treino de combate e boxe",
-    caption: "Treino de Combate",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80&fit=crop",
-    alt: "Vista geral do ginásio Target",
-    caption: "Target Gym",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80&fit=crop",
-    alt: "Treinador e atleta em sessão intensa",
-    caption: "Sessão Intensa",
-  },
+const imageSrcs = [
+  "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1581009137042-c552e485697a?w=800&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=800&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=800&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=800&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80&fit=crop",
 ];
 
 export default function GallerySection() {
+  const { t } = useLanguage();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -65,8 +35,8 @@ export default function GallerySection() {
     const handleKey = (e: KeyboardEvent) => {
       if (lightboxIndex === null) return;
       if (e.key === "Escape") setLightboxIndex(null);
-      if (e.key === "ArrowRight") setLightboxIndex((i) => (i !== null ? (i + 1) % images.length : null));
-      if (e.key === "ArrowLeft") setLightboxIndex((i) => (i !== null ? (i - 1 + images.length) % images.length : null));
+      if (e.key === "ArrowRight") setLightboxIndex((i) => (i !== null ? (i + 1) % imageSrcs.length : null));
+      if (e.key === "ArrowLeft") setLightboxIndex((i) => (i !== null ? (i - 1 + imageSrcs.length) % imageSrcs.length : null));
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
@@ -82,8 +52,10 @@ export default function GallerySection() {
     document.body.style.overflow = "";
   };
 
-  const prev = () => setLightboxIndex((i) => (i !== null ? (i - 1 + images.length) % images.length : null));
-  const next = () => setLightboxIndex((i) => (i !== null ? (i + 1) % images.length : null));
+  const prev = () => setLightboxIndex((i) => (i !== null ? (i - 1 + imageSrcs.length) % imageSrcs.length : null));
+  const next = () => setLightboxIndex((i) => (i !== null ? (i + 1) % imageSrcs.length : null));
+
+  const images = t.gallery.images;
 
   return (
     <section
@@ -95,34 +67,32 @@ export default function GallerySection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-16">
           <p className="text-[#e61f1f] text-xs font-semibold tracking-[0.4em] uppercase mb-4">
-            As Nossas Instalações
+            {t.gallery.sectionLabel}
           </p>
           <h2
             id="gallery-heading"
             className="text-4xl sm:text-5xl font-black uppercase"
             style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
           >
-            O Teu Novo
+            {t.gallery.titleLine1}
             <br />
-            <span className="text-[#e61f1f]">Campo de Batalha</span>
+            <span className="text-[#e61f1f]">{t.gallery.titleLine2}</span>
           </h2>
           <p className="mt-4 text-white/50 max-w-xl mx-auto text-sm">
-            Equipamento de última geração, espaços desenhados para máxima performance e
-            uma atmosfera que te empurra para além dos teus limites.
+            {t.gallery.subtitle}
           </p>
         </div>
 
-        {/* Masonry-style grid */}
         <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
           {images.map((img, idx) => (
             <div
-              key={img.src}
+              key={imageSrcs[idx]}
               className="break-inside-avoid relative group cursor-pointer overflow-hidden rounded-lg"
               onClick={() => openLightbox(idx)}
               data-testid={`gallery-image-${idx}`}
             >
               <img
-                src={img.src}
+                src={imageSrcs[idx]}
                 alt={img.alt}
                 loading="lazy"
                 className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
@@ -140,19 +110,18 @@ export default function GallerySection() {
         </div>
       </div>
 
-      {/* Lightbox */}
       {lightboxIndex !== null && (
         <div
           className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
           onClick={closeLightbox}
           role="dialog"
-          aria-label="Galeria ampliada"
+          aria-label={t.gallery.lightboxAriaLabel}
           data-testid="lightbox-overlay"
         >
           <button
             className="absolute top-4 right-4 text-white/70 hover:text-white transition-colors p-2"
             onClick={closeLightbox}
-            aria-label="Fechar"
+            aria-label={t.gallery.closeLabel}
             data-testid="button-lightbox-close"
           >
             <X size={28} />
@@ -161,7 +130,7 @@ export default function GallerySection() {
           <button
             className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-2 bg-white/10 rounded-full"
             onClick={(e) => { e.stopPropagation(); prev(); }}
-            aria-label="Imagem anterior"
+            aria-label="Previous"
             data-testid="button-lightbox-prev"
           >
             <ChevronLeft size={28} />
@@ -170,7 +139,7 @@ export default function GallerySection() {
           <button
             className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-2 bg-white/10 rounded-full"
             onClick={(e) => { e.stopPropagation(); next(); }}
-            aria-label="Próxima imagem"
+            aria-label="Next"
             data-testid="button-lightbox-next"
           >
             <ChevronRight size={28} />
@@ -181,7 +150,7 @@ export default function GallerySection() {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={images[lightboxIndex].src.replace("w=800", "w=1200")}
+              src={imageSrcs[lightboxIndex].replace("w=800", "w=1200")}
               alt={images[lightboxIndex].alt}
               className="max-w-full max-h-[80vh] object-contain rounded-lg"
               data-testid="img-lightbox"
@@ -190,7 +159,7 @@ export default function GallerySection() {
               {images[lightboxIndex].caption}
             </p>
             <p className="text-center text-white/30 text-xs mt-1">
-              {lightboxIndex + 1} / {images.length}
+              {lightboxIndex + 1} / {imageSrcs.length}
             </p>
           </div>
         </div>
