@@ -3,52 +3,28 @@ import { Quote, Star } from "lucide-react";
 
 const testimonials = [
   {
-    name: "Carlos Mendes",
-    age: 38,
-    result: "Perdeu 18kg em 5 meses",
-    text: "Nunca pensei que conseguiria transformar o meu corpo assim. O Miguel adaptou cada treino ao meu horário de trabalho e os resultados superaram tudo o que eu esperava. A Target não é só um ginásio — é uma mudança de vida.",
+    name: "Erica Moreira",
+    text: "Este ginásio tem o melhor atendimento possível. Principalmente o ambiente do ginásio é muito motivador para as pessoas que queiram estar fitness. Eu recomendo este ginásio 10/10",
     stars: 5,
-    initials: "CM",
+    initials: "EM",
   },
   {
-    name: "Inês Carvalho",
-    age: 29,
-    result: "Ganhou 6kg de músculo",
-    text: "Comecei sem saber nada sobre treino de força. A Ana acompanhou-me desde o primeiro dia com uma paciência e conhecimento incríveis. Hoje treino com cargas que nunca imaginarei conseguir levantar. Recomendo a 100%.",
+    name: "Cristina Azevedo",
+    text: "Nota 10! Super profissionais! Parabéns",
     stars: 5,
-    initials: "IC",
+    initials: "CA",
   },
   {
-    name: "Rui Azevedo",
-    age: 44,
-    result: "Recuperou de lesão nas costas",
-    text: "Tinha uma hérnia discal e achava que nunca voltaria a treinar a sério. O João trabalhou comigo de forma progressiva e inteligente. Passados 4 meses, treino mais forte do que quando tinha 30 anos.",
+    name: "Carla Cunha",
+    text: "Best gym ever 😊",
     stars: 5,
-    initials: "RA",
+    initials: "CC",
   },
   {
-    name: "Beatriz Oliveira",
-    age: 25,
-    result: "Preparou a primeira corrida de 10km",
-    text: "Entrei para perder peso mas acabei apaixonada pelo treino funcional. A equipa da Target é excepcional — profissional, motivadora e genuinamente preocupada com o teu progresso. O melhor investimento que fiz em mim mesma.",
+    name: "João Santos",
+    text: "Top Mundial 👌",
     stars: 5,
-    initials: "BO",
-  },
-  {
-    name: "Pedro Nunes",
-    age: 52,
-    result: "Controlou diabetes tipo 2",
-    text: "Com a orientação da Sofia em nutrição e do Miguel no treino, consegui reverter a minha pré-diabetes e parar com a medicação. Isto é mais do que fitness — é medicina preventiva de alta qualidade.",
-    stars: 5,
-    initials: "PN",
-  },
-  {
-    name: "Filipa Costa",
-    age: 33,
-    result: "Voltou ao peso pré-gravidez",
-    text: "Oito meses após o parto, recuperei o meu corpo e muito mais — recuperei a minha confiança. A abordagem personalizada da Ana foi fundamental. Nunca me senti mais forte nem mais saudável.",
-    stars: 5,
-    initials: "FC",
+    initials: "JS",
   },
 ];
 
@@ -90,7 +66,7 @@ export default function TestimonialsSection() {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {testimonials.map((t) => (
             <blockquote
               key={t.name}
@@ -111,14 +87,15 @@ export default function TestimonialsSection() {
               </p>
 
               <div className="flex items-center gap-3 mt-2">
-                <div className="w-10 h-10 rounded-full bg-[#e61f1f] flex items-center justify-center font-black text-white text-sm flex-shrink-0"
+                <div
+                  className="w-10 h-10 rounded-full bg-[#e61f1f] flex items-center justify-center font-black text-white text-sm flex-shrink-0"
                   style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
                 >
                   {t.initials}
                 </div>
                 <div>
                   <p className="font-bold text-white text-sm">{t.name}</p>
-                  <p className="text-[#e61f1f] text-xs font-semibold">{t.result}</p>
+                  <p className="text-white/35 text-xs">Cliente verificado · Google</p>
                 </div>
               </div>
             </blockquote>
