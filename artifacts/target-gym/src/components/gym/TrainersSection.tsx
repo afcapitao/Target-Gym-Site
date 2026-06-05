@@ -28,7 +28,7 @@ const trainers = [
     specialty: "Treino Funcional & HIIT",
     certs: "NASM-CPT · CrossFit L2 · TRX Certified",
     bio: "Apaixonado por movimento funcional e treino de alta intensidade. João adapta cada treino ao nível do cliente, garantindo progressão segura e resultados rápidos.",
-    image: "https://images.unsplash.com/photo-1567013127542-490d757e51cd?w=400&h=500&q=80&fit=crop&crop=face",
+    image: "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=400&h=500&q=80&fit=crop&crop=face",
     instagram: "#",
     linkedin: "#",
   },
