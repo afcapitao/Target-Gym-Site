@@ -1,5 +1,6 @@
-import { Instagram, Facebook, Youtube, ArrowUp } from "lucide-react";
+import { Instagram, Facebook, Youtube, ArrowUp, Settings } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { Link } from "wouter";
 
 interface FooterProps {
   onBook: () => void;
@@ -152,6 +153,14 @@ export default function Footer({ onBook }: FooterProps) {
             <a href="#" className="text-white/25 hover:text-white/50 text-xs transition-colors" data-testid="link-footer-terms">
               {t.footer.terms}
             </a>
+            <Link
+              href="/admin"
+              className="flex items-center gap-1 text-white/20 hover:text-white/50 text-xs transition-colors"
+              data-testid="link-footer-admin"
+            >
+              <Settings size={11} />
+              Admin
+            </Link>
             <button
               onClick={scrollToTop}
               className="w-8 h-8 bg-[#e61f1f]/20 hover:bg-[#e61f1f] rounded-full flex items-center justify-center text-[#e61f1f] hover:text-white transition-all duration-200"
