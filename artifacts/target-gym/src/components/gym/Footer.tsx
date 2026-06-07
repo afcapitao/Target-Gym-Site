@@ -23,7 +23,7 @@ export default function Footer({ onBook }: FooterProps) {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <img
-              src="/logo.png"
+              src={`${import.meta.env.BASE_URL}logo.png`}
               alt="Target Personal Training Gym logo"
               className="h-16 w-auto mb-4"
             />

@@ -234,7 +234,7 @@ export default function Admin() {
       <div className="min-h-screen bg-[#0d0d0d] flex items-center justify-center p-4">
         <div className="w-full max-w-sm">
           <div className="text-center mb-8">
-            <img src="/logo.png" alt="Target Gym" className="h-16 mx-auto mb-4" />
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="Target Gym" className="h-16 mx-auto mb-4" />
             <h1 className="text-white font-black uppercase text-2xl tracking-tight" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
               Painel de Administração
             </h1>
@@ -266,7 +266,7 @@ export default function Admin() {
       {/* Header */}
       <header className="bg-[#141414] border-b border-white/10 px-4 sm:px-6 py-4 flex items-center justify-between sticky top-0 z-10">
         <div className="flex items-center gap-3">
-          <img src="/logo.png" alt="Target Gym" className="h-10 w-auto" />
+          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="Target Gym" className="h-10 w-auto" />
           <span className="bg-[#e61f1f] text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded">Admin</span>
         </div>
         <div className="flex items-center gap-3">

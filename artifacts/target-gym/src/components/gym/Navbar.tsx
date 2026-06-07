@@ -52,7 +52,7 @@ export default function Navbar({ onBook }: { onBook: () => void }) {
           data-testid="link-logo"
         >
           <img
-            src="/logo.png"
+            src={`${import.meta.env.BASE_URL}logo.png`}
             alt="Target Personal Training Gym logo"
             className="h-16 w-auto"
           />
