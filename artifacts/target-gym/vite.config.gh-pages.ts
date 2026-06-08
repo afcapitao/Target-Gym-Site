@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
 // For GitHub Pages the base is /<repo-name>/ unless using a custom domain (then /)
@@ -8,7 +7,7 @@ const base = process.env.GH_BASE_PATH ?? "/";
 
 export default defineConfig({
   base,
-  plugins: [react(), tailwindcss()],
+  plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "src"),

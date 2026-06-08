@@ -22,7 +22,7 @@ export const translations = {
       titleLine1: "Treina Como",
       titleLine2: "Um Campeão",
       subtitle:
-        "Personal training de elite no coração de Lisboa. Resultados reais, metodologias comprovadas e treinadores certificados ao teu lado em cada repetição.",
+        "Personal training de elite no Parque das Nações. Resultados reais, metodologias comprovadas e treinadores certificados ao teu lado em cada repetição.",
       ctaStart: "Começar Agora",
       ctaLearnMore: "Saber Mais",
     },
@@ -259,7 +259,7 @@ export const translations = {
       titleLine1: "Train Like",
       titleLine2: "A Champion",
       subtitle:
-        "Elite personal training in the heart of Lisbon. Real results, proven methodologies and certified trainers by your side every rep.",
+        "Elite personal training in Parque das Nações. Real results, proven methodologies and certified trainers by your side every rep.",
       ctaStart: "Start Now",
       ctaLearnMore: "Learn More",
     },

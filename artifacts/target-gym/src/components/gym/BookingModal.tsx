@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { X, Calendar, Clock, User, Mail, Phone, MessageSquare, ChevronDown, CheckCircle } from "lucide-react";
 import { useCreateBooking } from "@workspace/api-client-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 const timeSlots = [
   "06:00–07:00",
@@ -50,6 +51,7 @@ function FieldError({ msg }: { msg?: string }) {
 export default function BookingModal({ open, onClose, defaultService = "" }: BookingModalProps) {
   const { t } = useLanguage();
   const tb = t.booking;
+  const { trackEvent } = useAnalytics();
   const [form, setForm] = useState<FormState>({ ...emptyForm, service: defaultService });
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const mutation = useCreateBooking();
@@ -80,6 +82,13 @@ export default function BookingModal({ open, onClose, defaultService = "" }: Boo
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+
+    trackEvent("book_class", {
+      service: form.service,
+      date: form.preferredDate,
+      time: form.preferredTime,
+    });
+
     mutation.mutate({
       data: {
         name: form.name.trim(),

@@ -129,8 +129,8 @@ export default function Footer({ onBook }: FooterProps) {
                 1990-001 Lisboa
               </p>
               <p>
-                <a href="tel:+351910000000" className="hover:text-white transition-colors" data-testid="link-footer-phone">
-                  +351 910 000 000
+                <a href="tel:+351916602658" className="hover:text-white transition-colors" data-testid="link-footer-phone">
+                  +351 916 602 658
                 </a>
               </p>
               <p>
