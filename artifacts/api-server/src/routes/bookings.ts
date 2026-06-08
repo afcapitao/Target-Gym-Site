@@ -73,7 +73,7 @@ async function sendBookingEmail(booking: {
             </table>
 
             <div style="margin-top:28px;text-align:center">
-              <a href="${process.env.REPLIT_DEV_DOMAIN ?? ""}/admin"
+              <a href="https://targetgym.pt/admin"
                 style="display:inline-block;background:#e61f1f;color:#fff;text-decoration:none;padding:14px 32px;border-radius:8px;font-size:13px;font-weight:900;letter-spacing:2px;text-transform:uppercase">
                 Abrir Painel de Admin
               </a>
